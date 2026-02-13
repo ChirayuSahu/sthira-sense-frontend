@@ -1,11 +1,12 @@
 import React from "react"
 import HeroGraph from "../hero-graph"
 import { Button } from "../ui/button"
+import AreaChart from "../sample-chart"
 
 const HeroSection = () => {
   return (
     <section className="font-outfit min-h-screen w-full bg-white">
-      <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-6 pt-42 pb-24 text-center">
+      <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-6 pt-42 text-center">
         <h1 className="text-5xl font-semibold tracking-tight text-black md:text-5xl">
           Sthira Sense
         </h1>
@@ -28,7 +29,7 @@ const HeroSection = () => {
           </Button>
         </div>
 
-        <div className="mt-10 h-[55vh] w-full max-w-6xl rounded-xl border border-gray-200 bg-white">
+        <div className="mt-10 h-[55vh] w-full max-w-6xl overflow-hidden rounded-xl border border-gray-200 bg-white">
           <HeroGraph />
         </div>
       </div>

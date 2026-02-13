@@ -87,9 +87,9 @@ export default function AreaChart() {
   }, [data])
 
   return (
-    <div className="w-full">
+    <div className="h-full w-full">
       {!data && <div className="p-6 text-center text-white">Loading chart...</div>}
-      <div ref={containerRef} className="w-full rounded-xl" />
+      <div ref={containerRef} className="h-full w-full" />
     </div>
   )
 }
