@@ -28,7 +28,7 @@ const HeroSection = () => {
           </Button>
         </div>
 
-        <div className="mt-10 h-[55vh] w-full max-w-6xl overflow-hidden rounded-xl border border-gray-200 bg-white">
+        <div className="mt-10 h-[55vh] w-full overflow-hidden rounded-xl border border-gray-200 bg-white">
           <HeroGraph />
         </div>
       </div>
