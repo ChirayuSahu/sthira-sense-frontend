@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Menu, X } from "lucide-react"
 import { Button } from "../ui/button"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 const navItems = [
   { name: "Features", href: "#" },
@@ -14,6 +15,9 @@ const navItems = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const pathname = usePathname()
+
+  if (pathname !== "/") return null
 
   return (
     <div className="fixed top-6 right-0 left-0 z-50 flex justify-center">
