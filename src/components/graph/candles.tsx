@@ -151,7 +151,7 @@ export default function CustomCandleChart({
   }, [symbol, period1, period2, interval])
 
   return (
-    <div className="relative h-fit max-h-full w-full max-w-full overflow-y-hidden">
+    <div className="relative h-full max-h-full min-h-full w-full max-w-full overflow-y-hidden">
       <Badge variant="outline" className="absolute top-2 left-2 z-10 rounded-md bg-white">
         {symbol}
       </Badge>

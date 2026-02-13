@@ -13,7 +13,7 @@ const Dashboard = () => {
         <FNGCard />
         <FNGCard />
       </div>
-      <Card className="max-h-full w-full flex-1 overflow-hidden py-0">
+      <Card className="max-h-150 w-full flex-1 overflow-hidden py-0">
         <CustomCandleChart
           symbol="USDT-USD"
           period1={Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60}
