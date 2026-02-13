@@ -9,9 +9,9 @@ const Dashboard = () => {
     <div className="flex max-h-full w-full flex-col gap-4">
       <div className="flex gap-4">
         <FNGCard />
-        <GraphCard />
-        <FNGCard />
-        <FNGCard />
+        <GraphCard symbol="USDT-USD" />
+        <GraphCard symbol="USDC-USD" />
+        <GraphCard symbol="BTC-USD" />
       </div>
       <Card className="max-h-150 w-full flex-1 overflow-hidden py-0">
         <CustomCandleChart
