@@ -1,7 +1,6 @@
 import React from "react"
 import HeroGraph from "../hero-graph"
 import { Button } from "../ui/button"
-import AreaChart from "../sample-chart"
 
 const HeroSection = () => {
   return (

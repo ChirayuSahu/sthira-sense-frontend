@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
 
-export async function GET(request: NextRequest, res: NextResponse) {
+export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
 
   const response = await fetch(
     `https://query2.finance.yahoo.com/v8/finance/chart/USDC-USD?${searchParams.toString()}`
   )
 
-  const data: any = await response.json()
+  const data = await response.json()
 
   const formatted = {
     timestamp: data.chart.result[0].timestamp,
