@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Outfit } from "next/font/google"
 import "./globals.css"
+import { Toaster } from "sonner"
 
 //import sections
 import Navbar from "@/components/sections/navbar"
@@ -25,6 +26,7 @@ export default function RootLayout({
       <body className={`${outfit.variable} font-outfit antialiased`}>
         <Navbar />
         {children}
+        <Toaster position="top-right" />
       </body>
     </html>
   )
