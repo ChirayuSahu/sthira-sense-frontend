@@ -24,7 +24,7 @@ const sidebarItems = [
   {
     label: "Analytics",
     icon: <BarChart3 size={18} />,
-    href: "/analytics",
+    href: "/dashboard/analytics",
   },
   {
     label: "Profile",
@@ -52,10 +52,13 @@ export function AppSidebar() {
           <SidebarMenu className="space-y-2">
             {sidebarItems.map((item) => (
               <SidebarMenuItem key={item.label}>
-                <SidebarMenuButton className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-gray-700 transition hover:bg-gray-100 hover:text-black">
+                <Link
+                  href={item.href}
+                  className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-gray-700 transition hover:bg-gray-100 hover:text-black"
+                >
                   {item.icon}
                   {item.label}
-                </SidebarMenuButton>
+                </Link>
               </SidebarMenuItem>
             ))}
           </SidebarMenu>

@@ -5,6 +5,7 @@ import { createChart, ColorType, CandlestickSeries } from "lightweight-charts"
 import { Badge } from "../ui/badge"
 import { Loader2 } from "lucide-react"
 import type { OHCLResponse } from "@/types/ohcl"
+import { toast } from "sonner"
 
 export default function CustomCandleChart({
   symbol,
@@ -113,6 +114,12 @@ export default function CustomCandleChart({
         )
 
         const json: OHCLResponse = await res.json()
+
+        if (!res.ok) {
+          toast.error(`Failed to fetch OHLC data for ${symbol}`)
+          console.log("Error fetching OHLC data:", json)
+          return
+        }
 
         const formatted = json.data.timestamp
           .map((t, i) => {
