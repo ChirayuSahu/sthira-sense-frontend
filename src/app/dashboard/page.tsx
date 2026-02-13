@@ -13,7 +13,7 @@ const Dashboard = () => {
         <FNGCard />
         <FNGCard />
       </div>
-      <Card className="h-fit max-h-full w-full flex-1 overflow-hidden py-0">
+      <Card className="max-h-full w-full flex-1 overflow-hidden py-0">
         <CustomCandleChart
           symbol="USDT-USD"
           period1={Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60}
@@ -22,7 +22,7 @@ const Dashboard = () => {
           precision={8}
         />
       </Card>
-      <Card className="h-fit max-h-full w-full flex-1 overflow-hidden py-0">
+      {/* <Card className="h-full max-h-full w-full flex-1 overflow-hidden py-0">
         <CustomCandleChart
           symbol="BTC-INR"
           period1={Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60}
@@ -30,7 +30,7 @@ const Dashboard = () => {
           interval="1h"
           precision={2}
         />
-      </Card>
+      </Card> */}
     </div>
   )
 }
