@@ -2,6 +2,7 @@
 
 import React, { useCallback } from "react"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
+import { Suspense } from "react"
 
 import {
   Select,
@@ -42,7 +43,7 @@ const currencyList = [
 
 const timeline = ["1d"]
 
-const AnalyticsPage = () => {
+const Analytics = () => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -136,4 +137,10 @@ const AnalyticsPage = () => {
   )
 }
 
-export default AnalyticsPage
+export default function AnalyticsPage() {
+  return (
+    <Suspense fallback={null}>
+      <Analytics />
+    </Suspense>
+  )
+}
