@@ -1,6 +1,7 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useCallback } from "react"
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 
 import {
   Select,
@@ -27,7 +28,7 @@ const coins = [
   { label: "Dogecoin", value: "DOGE" },
 ]
 
-const currency = [
+const currencyList = [
   { label: "USD", value: "USD", precision: 2 },
   { label: "INR", value: "INR", precision: 2 },
   { label: "EUR", value: "EUR", precision: 2 },
@@ -39,59 +40,98 @@ const currency = [
   { label: "CNY", value: "CNY", precision: 2 },
 ]
 
+const timeline = ["1d"]
+
 const AnalyticsPage = () => {
-  const [selectedCoin, setSelectedCoin] = useState<string | null>(null)
-  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null)
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const currentCoin = searchParams.get("coin")
+  const currentCurrency = searchParams.get("currency")
+
+  const isReady = currentCoin && currentCurrency
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set(name, value)
+      return params.toString()
+    },
+    [searchParams]
+  )
+
+  const handleFilterChange = (key: "coin" | "currency", value: string) => {
+    router.push(pathname + "?" + createQueryString(key, value))
+  }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex h-full flex-col gap-4">
       <div className="flex gap-2">
-        <Select value={selectedCoin || undefined} onValueChange={setSelectedCoin}>
+        <Select
+          value={currentCoin || ""}
+          onValueChange={(value) => handleFilterChange("coin", value)}
+        >
           <SelectTrigger className="w-full max-w-48">
             <SelectValue placeholder="Select a coin" />
           </SelectTrigger>
           <SelectContent position="popper">
             <SelectGroup>
               <SelectLabel>Coins</SelectLabel>
-              {coins.map((coin) => (
-                <SelectItem key={coin.value} value={coin.value}>
-                  {coin.label}
+              {coins.map((c) => (
+                <SelectItem key={c.value} value={c.value}>
+                  {c.label}
                 </SelectItem>
               ))}
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Select value={selectedCurrency || undefined} onValueChange={setSelectedCurrency}>
+
+        <Select
+          value={currentCurrency || ""}
+          onValueChange={(value) => handleFilterChange("currency", value)}
+        >
           <SelectTrigger className="w-full max-w-48">
             <SelectValue placeholder="Select Currency" />
           </SelectTrigger>
           <SelectContent position="popper">
             <SelectGroup>
               <SelectLabel>Currency</SelectLabel>
-              {currency.map((coin) => (
-                <SelectItem key={coin.value} value={coin.value}>
-                  {coin.label}
+              {currencyList.map((c) => (
+                <SelectItem key={c.value} value={c.value}>
+                  {c.label}
                 </SelectItem>
               ))}
             </SelectGroup>
           </SelectContent>
         </Select>
       </div>
-      {selectedCoin && selectedCurrency && (
-        <Card className="max-h-150 w-full flex-1 overflow-hidden py-0">
-          <CustomCandleChart
-            symbol={selectedCoin ? `${selectedCoin}-${selectedCurrency || "USD"}` : "BTC-USD"}
-            period1={Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60}
-            period2={Math.floor(Date.now() / 1000)}
-            interval="1h"
-            precision={
-              selectedCurrency
-                ? currency.find((c) => c.value === selectedCurrency)?.precision || 2
-                : 2
-            }
-          />
-        </Card>
-      )}
+
+      <div className="flex min-h-0 flex-1">
+        {isReady ? (
+          <Card className="h-125 w-full flex-1 overflow-hidden py-0">
+            <CustomCandleChart
+              key={`${currentCoin}-${currentCurrency}`}
+              symbol={`${currentCoin}-${currentCurrency}`}
+              period1={Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60}
+              period2={Math.floor(Date.now() / 1000)}
+              interval="30m"
+              precision={4}
+            />
+          </Card>
+        ) : (
+          <div className="border-muted-foreground/30 bg-muted/20 flex min-h-125 flex-1 items-center justify-center rounded-xl border border-dashed">
+            <div className="text-center">
+              <h2 className="text-foreground text-lg font-semibold">
+                Select a coin to view analytics
+              </h2>
+              <p className="text-muted-foreground mt-2 text-sm">
+                Choose a cryptocurrency and currency pair to display price data.
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

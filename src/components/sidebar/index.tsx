@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/sidebar"
 
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 import { LayoutDashboard, BarChart3, Settings, User, LogOut } from "lucide-react"
 
@@ -39,6 +40,8 @@ const sidebarItems = [
 ]
 
 export function AppSidebar() {
+  const pathname = usePathname()
+
   return (
     <Sidebar className="border-r border-gray-200 bg-white">
       <SidebarHeader className="border-b border-gray-100 px-6 py-4">
@@ -54,7 +57,7 @@ export function AppSidebar() {
               <SidebarMenuItem key={item.label}>
                 <Link
                   href={item.href}
-                  className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-gray-700 transition hover:bg-gray-100 hover:text-black"
+                  className={`flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 transition ${pathname === item.href ? "bg-chart-1 text-white" : "text-gray-600 hover:bg-gray-50 hover:text-black"}`}
                 >
                   {item.icon}
                   {item.label}
