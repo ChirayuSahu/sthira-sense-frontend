@@ -31,7 +31,7 @@ const FNGCard = () => {
   const timestamp = fngData ? new Date(Number(fngData.timestamp) * 1000).toLocaleString() : ""
 
   return (
-    <Card className="flex w-full flex-col justify-between rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+    <Card className="flex w-full flex-col justify-between rounded-2xl border border-gray-200 bg-white p-8">
       <div>
         <p className="text-sm font-medium tracking-wide text-gray-500">Fear & Greed Index</p>
       </div>

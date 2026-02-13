@@ -4,7 +4,7 @@ import { Card } from "../ui/card"
 
 const GraphCard = () => {
   return (
-    <Card className="flex w-full flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white py-0! shadow-sm">
+    <Card className="flex h-full w-full flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white py-0">
       <CustomGraph
         symbol="USDT-USD"
         period1={Math.floor(Date.now() / 1000) - 1 * 60 * 60}
