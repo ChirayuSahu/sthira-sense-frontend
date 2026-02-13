@@ -1,6 +1,6 @@
 import React from "react"
-import FNGCard from "@/components/dashboad/fng"
-import GraphCard from "@/components/dashboad/graph-card"
+import FNGCard from "@/components/dashboard/fng"
+import GraphCard from "@/components/dashboard/graph-card"
 
 const Dashboard = () => {
   return (
