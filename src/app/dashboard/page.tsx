@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card"
 const Dashboard = () => {
   return (
     <div className="flex max-h-full w-full flex-col gap-4">
-      <div className="flex gap-4">
+      <div className="flex flex-col gap-4 md:flex-row">
         <FNGCard />
         <GraphCard symbol="USDT-USD" />
         <GraphCard symbol="USDC-USD" />
