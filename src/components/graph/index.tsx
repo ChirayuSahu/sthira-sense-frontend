@@ -15,7 +15,7 @@ import type { OHCLResponse } from "@/types/ohcl"
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
+    label: "Price",
     color: "var(--chart-1)",
   },
 } satisfies ChartConfig
@@ -26,12 +26,14 @@ export default function CustomGraph({
   period2,
   interval,
   type = "linear",
+  showStat = true,
 }: {
   symbol: string
   period1: number
   period2: number
   interval: string
   type?: "linear" | "monotone"
+  showStat?: boolean
 }) {
   const [data, setData] = useState<{ time: number; value: number }[]>([])
 
@@ -44,9 +46,9 @@ export default function CustomGraph({
           `/api/ohcl?symbol=${symbol}&period1=${period1}&period2=${period2}&interval=${interval}`,
           {
             signal: controller.signal,
-            cache: "force-cache",
           }
         )
+
         const json: OHCLResponse = await res.json()
 
         const formatted = json.data.timestamp
@@ -69,16 +71,48 @@ export default function CustomGraph({
     return () => controller.abort()
   }, [symbol, period1, period2, interval])
 
+  // ✅ Calculate Change
+  const lastValue = data[data.length - 1]?.value
+  const prevValue = data[data.length - 2]?.value
+
+  let change = 0
+  let percent = 0
+
+  if (lastValue != null && prevValue != null) {
+    change = lastValue - prevValue
+    percent = (change / prevValue) * 100
+  }
+
+  const isUp = change > 0
+  const isDown = change < 0
+
   return (
     <div className="relative h-full w-full">
-      <Badge variant="outline" className="absolute top-2 left-2 z-10 rounded-md bg-white">
-        {symbol}
-      </Badge>
+      {/* Top Badge Section */}
+      <div className="absolute top-2 left-2 z-10 flex items-center gap-2">
+        <Badge variant="outline" className="rounded-md bg-white">
+          {symbol}
+        </Badge>
+
+        {showStat && data.length > 1 && (
+          <Badge
+            className={`rounded-md font-medium text-white ${
+              isUp ? "bg-green-500" : isDown ? "bg-red-500" : "bg-gray-400"
+            }`}
+          >
+            {isUp ? "▲" : isDown ? "▼" : "–"} {percent.toFixed(2)}%
+          </Badge>
+        )}
+      </div>
+
+      {/* Loader */}
       {data.length === 0 && (
         <div className="text-muted-foreground flex h-full min-h-20 w-full animate-pulse items-center justify-center">
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
         </div>
       )}
+
+      {/* Chart */}
       {data.length > 0 && (
         <ChartContainer config={chartConfig} className="aspect-auto h-full w-full">
           <AreaChart
@@ -90,14 +124,7 @@ export default function CustomGraph({
               right: 0,
             }}
           >
-            <XAxis
-              dataKey="time"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => new Date(value * 1000).toLocaleTimeString()}
-              hide
-            />
+            <XAxis dataKey="time" tickLine={false} axisLine={false} hide />
 
             <YAxis domain={[(dataMin: number) => dataMin, (dataMax: number) => dataMax]} hide />
 
@@ -111,13 +138,14 @@ export default function CustomGraph({
                 />
               }
             />
+
             <Area
               dataKey="value"
               fill="var(--chart-1)"
               fillOpacity={0.4}
               type={type}
               stroke="var(--chart-1)"
-              animationDuration={1500}
+              animationDuration={1200}
               animationEasing="ease-in-out"
             />
           </AreaChart>
