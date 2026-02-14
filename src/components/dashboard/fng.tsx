@@ -32,10 +32,10 @@ const FNGCard = () => {
   const timestamp = fngData ? new Date(Number(fngData.timestamp) * 1000).toLocaleString() : ""
 
   return (
-    <Card className="flex w-full flex-col items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white p-8">
+    <Card className="flex w-full flex-col items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white p-8 dark:border-neutral-800 dark:bg-neutral-900">
       <RiskMeter value={value} />
       <div className="space-y-2 text-center">
-        <p className="text-lg font-medium text-gray-800">
+        <p className="text-lg font-medium text-gray-800 dark:text-neutral-200">
           {fngData?.value_classification || "No data available"}
         </p>
         <p className="mt-4 text-xs text-gray-400">

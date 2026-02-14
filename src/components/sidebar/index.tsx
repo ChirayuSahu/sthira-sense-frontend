@@ -11,6 +11,7 @@ import {
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { ModeToggle } from "../ui/mode-switcher"
 
 import { LayoutDashboard, BarChart3, User, BotMessageSquare, LogOut } from "lucide-react"
 
@@ -46,10 +47,13 @@ export function AppSidebar() {
   const pathname = usePathname()
 
   return (
-    <Sidebar className="border-r border-gray-200 bg-white">
-      <SidebarHeader className="border-b border-gray-100 px-6 py-4">
-        <Link href={"/"} className="text-xl font-semibold tracking-tight text-black">
-          Sthira<span className="text-gray-500">Sense</span>
+    <Sidebar className="border-r border-gray-200 bg-white dark:border-neutral-800 dark:bg-neutral-900">
+      <SidebarHeader className="border-b border-gray-100 px-6 py-4 dark:border-neutral-800">
+        <Link
+          href={"/"}
+          className="text-xl font-semibold tracking-tight text-black dark:text-white"
+        >
+          Sthira<span className="text-gray-500 dark:text-gray-400">Sense</span>
         </Link>
       </SidebarHeader>
 
@@ -60,7 +64,7 @@ export function AppSidebar() {
               <SidebarMenuItem key={item.label}>
                 <Link
                   href={item.href}
-                  className={`flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 transition ${pathname === item.href ? "bg-chart-1 text-white" : "text-gray-600 hover:bg-gray-50 hover:text-black"}`}
+                  className={`flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 transition ${pathname === item.href ? "bg-chart-1 text-white" : "text-gray-600 hover:bg-gray-50 hover:text-black dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white"}`}
                 >
                   {item.icon}
                   {item.label}

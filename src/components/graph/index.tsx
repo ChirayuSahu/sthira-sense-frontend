@@ -90,13 +90,16 @@ export default function CustomGraph({
   return (
     <div className="relative h-full w-full">
       <div className="absolute top-2 left-2 z-10 flex items-center gap-2">
-        <Badge variant="outline" className="rounded-md bg-white">
+        <Badge
+          variant="outline"
+          className="rounded-md bg-white dark:bg-neutral-800 dark:text-neutral-200"
+        >
           {symbol}
         </Badge>
 
         {showStat && data.length > 1 && (
           <Badge
-            className={`rounded-md bg-white font-medium ${
+            className={`rounded-md bg-white font-medium dark:bg-neutral-800 ${
               isUp
                 ? "border border-green-500 text-green-500"
                 : isDown

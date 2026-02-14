@@ -52,8 +52,8 @@ export default function AiChat() {
   }
 
   return (
-    <Card className="flex min-h-1/2 w-full flex-col gap-0 overflow-hidden pb-0">
-      <CardHeader className="border-b">
+    <Card className="flex min-h-1/2 w-full flex-col gap-0 overflow-hidden bg-white pb-0 dark:border-neutral-800 dark:bg-neutral-900">
+      <CardHeader className="border-b dark:border-neutral-800">
         <CardTitle className="flex items-center gap-2">
           <Bot className="text-chart-1 h-5 w-5" />
           AI Collaboration
@@ -62,7 +62,7 @@ export default function AiChat() {
 
       <CardContent className="relative flex-1 overflow-hidden p-0">
         {/* Opacity mask at the top */}
-        <div className="from-background pointer-events-none absolute top-0 right-0 left-0 z-10 h-10 bg-gradient-to-b to-transparent" />
+        <div className="pointer-events-none absolute top-0 right-0 left-0 z-10 h-10 bg-linear-to-b from-white to-transparent dark:from-neutral-900" />
 
         <ScrollArea className="h-full px-4" ref={scrollRef}>
           <div className="flex flex-col gap-4 pt-4 pb-2">
@@ -104,7 +104,7 @@ export default function AiChat() {
         </ScrollArea>
       </CardContent>
 
-      <CardFooter className="border-t p-4">
+      <CardFooter className="border-t p-4 dark:border-neutral-800">
         <form
           onSubmit={(e) => {
             e.preventDefault()

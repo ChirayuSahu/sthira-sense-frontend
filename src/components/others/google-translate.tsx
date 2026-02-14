@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { ModeToggle } from "@/components/ui/mode-switcher"
 
 declare global {
   interface Window {
@@ -32,7 +33,6 @@ export default function LanguageSelector() {
       new window.google.translate.TranslateElement(
         {
           pageLanguage: "en",
-          // Only including the specific languages you requested
           includedLanguages: "en,hi,ta",
           autoDisplay: false,
         },
@@ -52,10 +52,10 @@ export default function LanguageSelector() {
 
   return (
     <>
-      {/* Hidden Google Widget - required for the bridge to work */}
       <div id="google_translate_element" className="hidden" />
 
-      <div className="fixed bottom-4 left-4 z-50">
+      <div className="fixed bottom-4 left-4 z-50 flex cursor-pointer items-center gap-2">
+        <ModeToggle />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button

@@ -2,8 +2,12 @@
 
 import React from "react"
 import GaugeComponent from "react-gauge-component"
+import { useTheme } from "next-themes"
 
 const RiskMeter = ({ value }: { value: number }) => {
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === "dark"
+
   return (
     <GaugeComponent
       value={value}
@@ -22,15 +26,15 @@ const RiskMeter = ({ value }: { value: number }) => {
       }}
       pointer={{
         type: "needle",
-        color: "#34495e",
+        color: isDark ? "#A3A3A3" : "#34495e",
         width: 15,
         length: 0.8,
         animationDuration: 1500,
-        baseColor: "#34495e",
+        baseColor: isDark ? "#A3A3A3" : "#34495e",
       }}
       labels={{
         valueLabel: {
-          style: { fontSize: "35px", fill: "#000000", textShadow: "none" },
+          style: { fontSize: "35px", fill: isDark ? "#ffffff" : "#000000", textShadow: "none" },
           formatTextValue: (val) => `${val.toString()}`,
         },
         tickLabels: {
