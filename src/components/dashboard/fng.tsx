@@ -5,7 +5,6 @@ import { FNGResponse } from "@/types/fng"
 import DataCard from "./custom-card"
 import RiskMeter from "./risk-meter"
 import { Card } from "../ui/card"
-import { Car } from "lucide-react"
 
 const FNGCard = () => {
   const [loading, setLoading] = useState(true)
@@ -34,11 +33,16 @@ const FNGCard = () => {
   const timestamp = fngData ? new Date(Number(fngData.timestamp) * 1000).toLocaleString() : ""
 
   return (
-    <Card className="flex w-full flex-col items-center justify-center rounded-2xl border border-gray-200 bg-white p-8">
+    <Card className="flex w-full flex-col items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white p-8">
       <RiskMeter value={value} />
-      <p className="text-lg font-medium text-gray-800">
-        {fngData?.value_classification || "No data available"}
-      </p>
+      <div className="space-y-2 text-center">
+        <p className="text-lg font-medium text-gray-800">
+          {fngData?.value_classification || "No data available"}
+        </p>
+        <p className="mt-4 text-xs text-gray-400">
+          Last updated: {new Date(timestamp).toLocaleString("en-GB")}
+        </p>
+      </div>
     </Card>
   )
 }

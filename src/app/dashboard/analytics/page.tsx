@@ -118,6 +118,8 @@ const Analytics = () => {
               period2={Math.floor(Date.now() / 1000)}
               interval="30m"
               precision={4}
+              highlightStartTime={Math.floor(Date.now() / 1000) - 2 * 24 * 60 * 60}
+              highlightEndTime={Math.floor(Date.now() / 1000) - 24 * 60 * 60}
             />
           </Card>
         ) : (

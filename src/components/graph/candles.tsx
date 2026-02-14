@@ -5,6 +5,7 @@ import {
   createChart,
   ColorType,
   CandlestickSeries,
+  AreaSeries,
   IChartApi,
   ISeriesApi,
 } from "lightweight-charts"
@@ -13,22 +14,29 @@ import { Loader2 } from "lucide-react"
 import type { OHCLResponse } from "@/types/ohcl"
 import { toast } from "sonner"
 
+import type { Time } from "lightweight-charts"
+
 export default function CustomCandleChart({
   symbol,
   period1,
   period2,
   interval,
   precision,
+  highlightStartTime,
+  highlightEndTime,
 }: {
   symbol: string
   period1: number
   period2: number
   interval: string
   precision: number
+  highlightStartTime?: number
+  highlightEndTime?: number
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const chartRef = useRef<IChartApi | null>(null)
   const seriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null)
+  const highlightSeriesRef = useRef<ISeriesApi<"Area"> | null>(null)
 
   const [loading, setLoading] = useState(true)
 
@@ -53,9 +61,7 @@ export default function CustomCandleChart({
         fixLeftEdge: true,
         fixRightEdge: true,
       },
-      crosshair: {
-        mode: 1,
-      },
+      crosshair: { mode: 1 },
       width: containerRef.current.clientWidth,
       height: containerRef.current.clientHeight || 400,
     })
@@ -75,8 +81,18 @@ export default function CustomCandleChart({
       },
     })
 
+    const highlightSeries = chart.addSeries(AreaSeries, {
+      lineColor: "rgba(0,0,0,0)",
+      topColor: "rgba(59, 130, 246, 0.25)",
+      bottomColor: "rgba(59, 130, 246, 0.08)",
+      priceLineVisible: false,
+      lastValueVisible: false,
+      crosshairMarkerVisible: false,
+    })
+
     chartRef.current = chart
     seriesRef.current = series
+    highlightSeriesRef.current = highlightSeries
 
     const resizeObserver = new ResizeObserver((entries) => {
       if (!entries.length || !chartRef.current) return
@@ -133,9 +149,35 @@ export default function CustomCandleChart({
           })
           .filter((item): item is any => item !== null)
 
-        if (seriesRef.current) {
-          seriesRef.current.setData(formatted)
-          chartRef.current?.timeScale().fitContent()
+        if (!seriesRef.current || !chartRef.current) return
+
+        seriesRef.current.setData(formatted)
+
+        if (highlightStartTime && highlightEndTime && highlightSeriesRef.current) {
+          const clampedStart = Math.max(highlightStartTime, period1)
+          const clampedEnd = Math.min(highlightEndTime, period2)
+
+          if (clampedStart < clampedEnd) {
+            chartRef.current.timeScale().setVisibleRange({
+              from: clampedStart as Time,
+              to: clampedEnd as Time,
+            })
+
+            const maxPrice = Math.max(...formatted.map((d) => d.high))
+
+            const highlightData = formatted
+              .filter((d) => d.time >= clampedStart && d.time <= clampedEnd)
+              .map((d) => ({
+                time: d.time,
+                value: maxPrice,
+              }))
+
+            highlightSeriesRef.current.setData(highlightData)
+          } else {
+            chartRef.current.timeScale().fitContent()
+          }
+        } else {
+          chartRef.current.timeScale().fitContent()
         }
       } catch (err) {
         if ((err as Error).name !== "AbortError") {
@@ -148,7 +190,7 @@ export default function CustomCandleChart({
 
     fetchData()
     return () => controller.abort()
-  }, [symbol, period1, period2, interval])
+  }, [symbol, period1, period2, interval, highlightStartTime, highlightEndTime])
 
   return (
     <div className="relative h-full w-full overflow-hidden">

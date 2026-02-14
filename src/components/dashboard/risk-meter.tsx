@@ -13,27 +13,31 @@ const RiskMeter = ({ value }: { value: number }) => {
         padding: 0.02,
         cornerRadius: 1,
         subArcs: [
-          { limit: 20, color: "#5BE12C", showTick: true },
-          { limit: 40, color: "#F5CD19", showTick: true },
-          { limit: 60, color: "#F58B19", showTick: true },
-          { limit: 100, color: "#EA4228", showTick: true },
+          { limit: 20, color: "#EA4228", showTick: false }, // Extreme Fear (Red)
+          { limit: 40, color: "#F58B19", showTick: false }, // Fear (Orange)
+          { limit: 60, color: "#5BE12C", showTick: false }, // Neutral (Green)
+          { limit: 80, color: "#F58B19", showTick: false }, // Greed (Orange)
+          { limit: 100, color: "#EA4228", showTick: false }, // Extreme Greed (Red)
         ],
       }}
       pointer={{
         type: "needle",
         color: "#34495e",
-        width: 20,
-        length: 0.75,
+        width: 15,
+        length: 0.8,
         animationDuration: 1500,
         baseColor: "#34495e",
       }}
       labels={{
         valueLabel: {
-          formatTextValue: (value) => value + " / 100",
-          style: { fontSize: "35px", fill: "#464A4F", textShadow: "none" },
+          style: { fontSize: "35px", fill: "#000000", textShadow: "none" },
+          formatTextValue: (val) => `${val.toString()}`,
         },
         tickLabels: {
           type: "outer",
+          defaultTickValueConfig: {
+            formatTextValue: (val) => val.toString(),
+          },
           ticks: [{ value: 20 }, { value: 40 }, { value: 60 }, { value: 80 }, { value: 100 }],
         },
       }}

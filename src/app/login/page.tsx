@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 
 const LoginPage = () => {
   const handleGoogleLogin = () => {
-    window.location.href = "/api/auth/signin/google"
+    window.location.href = "https://sthirasense.onrender.com/v1/auth/google"
   }
 
   return (
