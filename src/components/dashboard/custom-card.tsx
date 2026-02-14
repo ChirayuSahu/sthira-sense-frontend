@@ -39,7 +39,9 @@ const DataCard = ({
 
           <p className="text-lg font-medium text-gray-800">{description}</p>
 
-          <p className="mt-4 text-xs text-gray-400">Last updated: {timestamp.toLocaleString()}</p>
+          <p className="mt-4 text-xs text-gray-400">
+            Last updated: {timestamp.toLocaleString("en-GB")}
+          </p>
         </div>
       )}
     </Card>

@@ -3,6 +3,7 @@ import FNGCard from "@/components/dashboard/fng"
 import GraphCard from "@/components/dashboard/graph-card"
 import CustomCandleChart from "@/components/graph/candles"
 import { Card } from "@/components/ui/card"
+import StableCoinsTable from "@/components/dashboard/coints-table"
 
 const Dashboard = () => {
   return (
@@ -13,24 +14,18 @@ const Dashboard = () => {
         <GraphCard symbol="USDC-USD" />
         <GraphCard symbol="BTC-USD" />
       </div>
-      <Card style={{ minHeight: "100%" }} className="min-h-full w-full flex-1 overflow-hidden py-0">
-        <CustomCandleChart
-          symbol="USDT-USD"
-          period1={Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60}
-          period2={Math.floor(Date.now() / 1000)}
-          interval="1h"
-          precision={8}
-        />
-      </Card>
-      {/* <Card className="h-full max-h-full w-full flex-1 overflow-hidden py-0">
-        <CustomCandleChart
-          symbol="BTC-INR"
-          period1={Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60}
-          period2={Math.floor(Date.now() / 1000)}
-          interval="1h"
-          precision={2}
-        />
-      </Card> */}
+      <div>
+        <Card className="h-auto w-full flex-1 overflow-hidden py-0">
+          <CustomCandleChart
+            symbol="USDT-USD"
+            period1={Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60}
+            period2={Math.floor(Date.now() / 1000)}
+            interval="1h"
+            precision={8}
+          />
+        </Card>
+      </div>
+      <StableCoinsTable />
     </div>
   )
 }

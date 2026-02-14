@@ -66,7 +66,7 @@ const Chat = () => {
   }
 
   return (
-    <div className="flex h-full max-h-[93vh] flex-col gap-4 overflow-y-hidden">
+    <div className="flex h-full max-h-[92vh] flex-col gap-4 overflow-y-hidden">
       <div className="flex gap-2">
         <Select
           value={currentCoin || ""}
