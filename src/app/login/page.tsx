@@ -4,7 +4,6 @@ import React, { Suspense, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useSearchParams } from "next/navigation"
-import { toast } from "sonner"
 
 const LoginPage = () => {
   const handleGoogleLogin = () => {
@@ -60,7 +59,9 @@ const LoginPage = () => {
 }
 
 export default function Login() {
-  ;<Suspense fallback={null}>
-    <LoginPage />
-  </Suspense>
+  return (
+    <Suspense fallback={null}>
+      <LoginPage />
+    </Suspense>
+  )
 }
