@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from "react"
+import React, { Suspense, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useSearchParams } from "next/navigation"
@@ -59,4 +59,8 @@ const LoginPage = () => {
   )
 }
 
-export default LoginPage
+export default function Login() {
+  ;<Suspense fallback={null}>
+    <LoginPage />
+  </Suspense>
+}

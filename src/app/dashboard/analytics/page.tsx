@@ -41,8 +41,6 @@ const currencyList = [
   { label: "CNY", value: "CNY", precision: 2 },
 ]
 
-const timeline = ["1d"]
-
 const Analytics = () => {
   const router = useRouter()
   const pathname = usePathname()

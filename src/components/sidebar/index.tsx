@@ -12,7 +12,7 @@ import {
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-import { LayoutDashboard, BarChart3, Settings, User, BotMessageSquare, LogOut } from "lucide-react"
+import { LayoutDashboard, BarChart3, User, BotMessageSquare, LogOut } from "lucide-react"
 
 const sidebarItems = [
   {

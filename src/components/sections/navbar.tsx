@@ -5,7 +5,6 @@ import { Menu, X } from "lucide-react"
 import { Button } from "../ui/button"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ModeToggle } from "../ui/mode-switcher"
 
 const navItems = [
   { name: "Features", href: "#" },

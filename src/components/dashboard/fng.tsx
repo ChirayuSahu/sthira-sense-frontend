@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react"
 import { FNGResponse } from "@/types/fng"
-import DataCard from "./custom-card"
 import RiskMeter from "./risk-meter"
 import { Card } from "../ui/card"
 
