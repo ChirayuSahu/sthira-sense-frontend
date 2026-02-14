@@ -1,7 +1,13 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { createChart, ColorType, CandlestickSeries } from "lightweight-charts"
+import {
+  createChart,
+  ColorType,
+  CandlestickSeries,
+  IChartApi,
+  ISeriesApi,
+} from "lightweight-charts"
 import { Badge } from "../ui/badge"
 import { Loader2 } from "lucide-react"
 import type { OHCLResponse } from "@/types/ohcl"
@@ -21,8 +27,8 @@ export default function CustomCandleChart({
   precision: number
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const chartRef = useRef<any>(null)
-  const seriesRef = useRef<any>(null)
+  const chartRef = useRef<IChartApi | null>(null)
+  const seriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null)
 
   const [loading, setLoading] = useState(true)
 
@@ -50,11 +56,9 @@ export default function CustomCandleChart({
       crosshair: {
         mode: 1,
       },
-      width: containerRef.current.clientWidth ? containerRef.current.clientWidth : 0,
-      height: containerRef.current.clientHeight ? containerRef.current.clientHeight : 0,
+      width: containerRef.current.clientWidth,
+      height: containerRef.current.clientHeight || 400,
     })
-
-    chartRef.current = chart
 
     const series = chart.addSeries(CandlestickSeries, {
       upColor: "#16a34a",
@@ -67,19 +71,12 @@ export default function CustomCandleChart({
       priceFormat: {
         type: "price",
         precision: precision,
-        minMove: 0.00000001,
+        minMove: 1 / Math.pow(10, precision),
       },
     })
 
+    chartRef.current = chart
     seriesRef.current = series
-
-    const handleResize = () => {
-      if (!containerRef.current) return
-      chart.applyOptions({
-        width: containerRef.current.clientWidth,
-        height: containerRef.current.clientHeight,
-      })
-    }
 
     const resizeObserver = new ResizeObserver((entries) => {
       if (!entries.length || !chartRef.current) return
@@ -87,7 +84,9 @@ export default function CustomCandleChart({
 
       if (width > 0 && height > 0) {
         chartRef.current.applyOptions({ width, height })
-        chartRef.current.timeScale().fitContent()
+        requestAnimationFrame(() => {
+          chartRef.current?.timeScale().fitContent()
+        })
       }
     })
 
@@ -96,8 +95,9 @@ export default function CustomCandleChart({
     return () => {
       resizeObserver.disconnect()
       chart.remove()
+      chartRef.current = null
     }
-  }, [])
+  }, [precision])
 
   useEffect(() => {
     const controller = new AbortController()
@@ -105,7 +105,6 @@ export default function CustomCandleChart({
     const fetchData = async () => {
       try {
         setLoading(true)
-
         const res = await fetch(
           `/api/ohcl?symbol=${symbol}&period1=${period1}&period2=${period2}&interval=${interval}`,
           {
@@ -117,8 +116,7 @@ export default function CustomCandleChart({
         const json: OHCLResponse = await res.json()
 
         if (!res.ok) {
-          toast.error(`Failed to fetch OHLC data for ${symbol}`)
-          console.log("Error fetching OHLC data:", json)
+          toast.error(`Failed to fetch data for ${symbol}`)
           return
         }
 
@@ -131,19 +129,13 @@ export default function CustomCandleChart({
 
             if (open == null || high == null || low == null || close == null) return null
 
-            return {
-              time: t,
-              open,
-              high,
-              low,
-              close,
-            }
+            return { time: t, open, high, low, close }
           })
-          .filter(Boolean)
+          .filter((item): item is any => item !== null)
 
         if (seriesRef.current) {
           seriesRef.current.setData(formatted)
-          chartRef.current.timeScale().fitContent()
+          chartRef.current?.timeScale().fitContent()
         }
       } catch (err) {
         if ((err as Error).name !== "AbortError") {
@@ -159,18 +151,21 @@ export default function CustomCandleChart({
   }, [symbol, period1, period2, interval])
 
   return (
-    <div className="relative max-h-full min-h-auto w-full overflow-hidden">
-      <Badge variant="outline" className="absolute top-2 left-2 z-10 rounded-md bg-white">
+    <div className="relative h-full w-full overflow-hidden">
+      <Badge
+        variant="outline"
+        className="absolute top-2 left-2 z-10 rounded-md bg-white/80 backdrop-blur-sm"
+      >
         {symbol}
       </Badge>
 
       {loading && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/50 backdrop-blur-xs">
-          <Loader2 className="h-4 w-4 animate-spin" />
+          <Loader2 className="text-primary h-4 w-4 animate-spin" />
         </div>
       )}
 
-      <div className="h-170 min-h-125" ref={containerRef} />
+      <div className="h-full min-h-max w-full" ref={containerRef} />
     </div>
   )
 }

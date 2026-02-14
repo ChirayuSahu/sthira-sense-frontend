@@ -3,18 +3,16 @@
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-import { LayoutDashboard, BarChart3, Settings, User, LogOut } from "lucide-react"
+import { LayoutDashboard, BarChart3, Settings, User, BotMessageSquare } from "lucide-react"
 
 const sidebarItems = [
   {
@@ -26,6 +24,11 @@ const sidebarItems = [
     label: "Analytics",
     icon: <BarChart3 size={18} />,
     href: "/dashboard/analytics",
+  },
+  {
+    label: "AI Chat",
+    icon: <BotMessageSquare size={18} />,
+    href: "/dashboard/chat",
   },
   {
     label: "Profile",

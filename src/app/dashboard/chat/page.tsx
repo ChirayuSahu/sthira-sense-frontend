@@ -15,35 +15,34 @@ import {
 } from "@/components/ui/select"
 import { Card } from "@/components/ui/card"
 import CustomCandleChart from "@/components/graph/candles"
+import AiChat from "@/components/dashboard/chat"
 
 const coins = [
-  { label: "Bitcoin", value: "BTC" },
-  { label: "Ethereum", value: "ETH" },
+  // { label: "Bitcoin", value: "BTC" },
+  // { label: "Ethereum", value: "ETH" },
   { label: "Tether", value: "USDT" },
-  { label: "USD Coin", value: "USDC" },
-  { label: "Binance Coin", value: "BNB" },
-  { label: "Cardano", value: "ADA" },
-  { label: "Solana", value: "SOL" },
-  { label: "XRP", value: "XRP" },
-  { label: "Polkadot", value: "DOT" },
-  { label: "Dogecoin", value: "DOGE" },
+  // { label: "USD Coin", value: "USDC" },
+  // { label: "Binance Coin", value: "BNB" },
+  // { label: "Cardano", value: "ADA" },
+  // { label: "Solana", value: "SOL" },
+  // { label: "XRP", value: "XRP" },
+  // { label: "Polkadot", value: "DOT" },
+  // { label: "Dogecoin", value: "DOGE" },
 ]
 
 const currencyList = [
   { label: "USD", value: "USD", precision: 2 },
-  { label: "INR", value: "INR", precision: 2 },
-  { label: "EUR", value: "EUR", precision: 2 },
-  { label: "JPY", value: "JPY", precision: 0 },
-  { label: "GBP", value: "GBP", precision: 2 },
-  { label: "AUD", value: "AUD", precision: 2 },
-  { label: "CAD", value: "CAD", precision: 2 },
-  { label: "CHF", value: "CHF", precision: 2 },
-  { label: "CNY", value: "CNY", precision: 2 },
+  // { label: "INR", value: "INR", precision: 2 },
+  // { label: "EUR", value: "EUR", precision: 2 },
+  // { label: "JPY", value: "JPY", precision: 0 },
+  // { label: "GBP", value: "GBP", precision: 2 },
+  // { label: "AUD", value: "AUD", precision: 2 },
+  // { label: "CAD", value: "CAD", precision: 2 },
+  // { label: "CHF", value: "CHF", precision: 2 },
+  // { label: "CNY", value: "CNY", precision: 2 },
 ]
 
-const timeline = ["1d"]
-
-const Analytics = () => {
+const Chat = () => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -67,7 +66,7 @@ const Analytics = () => {
   }
 
   return (
-    <div className="flex h-full flex-col gap-4">
+    <div className="flex h-full max-h-[93vh] flex-col gap-4 overflow-y-hidden">
       <div className="flex gap-2">
         <Select
           value={currentCoin || ""}
@@ -110,24 +109,28 @@ const Analytics = () => {
 
       <div className="flex min-h-0 flex-1">
         {isReady ? (
-          <Card className="h-full w-full flex-1 overflow-hidden py-0">
-            <CustomCandleChart
-              key={`${currentCoin}-${currentCurrency}`}
-              symbol={`${currentCoin}-${currentCurrency}`}
-              period1={Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60}
-              period2={Math.floor(Date.now() / 1000)}
-              interval="30m"
-              precision={4}
-            />
-          </Card>
+          <div className="grid max-h-full w-full grid-cols-1 gap-2 md:grid-cols-3">
+            <Card className="col-span-1 h-full w-full min-w-1/2 flex-1 overflow-hidden py-0 md:col-span-2">
+              <CustomCandleChart
+                key={`${currentCoin}-${currentCurrency}`}
+                symbol={`${currentCoin}-${currentCurrency}`}
+                period1={Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60}
+                period2={Math.floor(Date.now() / 1000)}
+                interval="30m"
+                precision={4}
+              />
+            </Card>
+            <AiChat />
+          </div>
         ) : (
           <div className="border-muted-foreground/30 bg-muted/20 flex min-h-125 flex-1 items-center justify-center rounded-xl border border-dashed">
             <div className="text-center">
               <h2 className="text-foreground text-lg font-semibold">
-                Select a coin to view analytics
+                Select a coin and currency pair to start chatting!
               </h2>
               <p className="text-muted-foreground mt-2 text-sm">
-                Choose a cryptocurrency and currency pair to display price data.
+                You can view price charts and ask questions about the selected coin&apos;s
+                performance, trends, and more.
               </p>
             </div>
           </div>
@@ -137,10 +140,10 @@ const Analytics = () => {
   )
 }
 
-export default function AnalyticsPage() {
+export default function ChatPage() {
   return (
     <Suspense fallback={null}>
-      <Analytics />
+      <Chat />
     </Suspense>
   )
 }
