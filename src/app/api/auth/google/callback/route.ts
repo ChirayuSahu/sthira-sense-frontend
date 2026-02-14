@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     value: token,
     httpOnly: true,
     secure: true,
-    sameSite: "lax",
+    sameSite: "none",
     path: "/",
     maxAge: 60 * 60 * 24 * 7,
   })
