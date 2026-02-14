@@ -9,15 +9,11 @@ export async function middleware(request: NextRequest) {
   const authRoutes = ["/login"]
 
   if (protectedRoutes.some((route) => pathname.startsWith(route)) && !token) {
-    const url = request.nextUrl.clone()
-    url.pathname = "/login"
-    return NextResponse.redirect(url)
+    return NextResponse.redirect(new URL("/login", request.url))
   }
 
   if (authRoutes.some((route) => pathname.startsWith(route)) && token) {
-    const url = request.nextUrl.clone()
-    url.pathname = "/dashboard"
-    return NextResponse.redirect(url)
+    return NextResponse.redirect(new URL("/dashboard", request.url))
   }
 
   return NextResponse.next()
