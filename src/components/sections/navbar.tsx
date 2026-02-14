@@ -18,16 +18,16 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
 
-  if (pathname !== "/") return null
+  if (pathname.startsWith("/dashboard")) return null
 
   return (
     <div className="fixed top-6 right-0 left-0 z-50 flex justify-center">
       <div className="w-full max-w-7xl px-6">
         <div className="border-border bg-background/80 rounded-xl border px-6 backdrop-blur-md">
           <div className="flex h-16 items-center justify-between">
-            <div className="text-foreground text-lg font-semibold tracking-tight">
+            <Link href="/" className="text-foreground text-lg font-semibold tracking-tight">
               Sthira<span className="text-muted-foreground">Sense</span>
-            </div>
+            </Link>
 
             <nav className="text-muted-foreground hidden items-center gap-10 text-sm md:flex">
               {navItems.map((item) => (
@@ -41,24 +41,17 @@ export default function Navbar() {
               ))}
             </nav>
 
-            {/* Desktop CTA */}
             <div className="hidden items-center gap-4 md:flex">
-              <ModeToggle />
-              <Button
-                variant="outline"
-                className="text-muted-foreground hover:text-foreground cursor-pointer hover:scale-102"
-              >
-                Login
-              </Button>
-
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer rounded-md px-5 hover:scale-102">
-                Get Started
-              </Button>
+              {/* <ModeToggle /> */}
+              <Link href="/login ">
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer rounded-md px-5 hover:scale-102">
+                  Get Started
+                </Button>
+              </Link>
             </div>
 
-            {/* Mobile Toggle */}
             <div className="flex items-center gap-4 md:hidden">
-              <ModeToggle />
+              {/* <ModeToggle /> */}
               <button onClick={() => setOpen(!open)} className="text-foreground">
                 {open ? <X size={22} /> : <Menu size={22} />}
               </button>
@@ -76,10 +69,11 @@ export default function Navbar() {
                   {item.name}
                 </Link>
               ))}
-
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 w-full cursor-pointer rounded-md transition hover:scale-102">
-                Get Started
-              </Button>
+              <Link href="/login ">
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 w-full cursor-pointer rounded-md transition hover:scale-102">
+                  Get Started
+                </Button>
+              </Link>
             </div>
           )}
         </div>

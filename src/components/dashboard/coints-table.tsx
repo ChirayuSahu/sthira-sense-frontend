@@ -46,7 +46,7 @@ export default function StableCoinsTable() {
   }, [])
 
   return (
-    <div className="bg-background overflow-hidden rounded-2xl border">
+    <div className="bg-background overflow-hidden rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>

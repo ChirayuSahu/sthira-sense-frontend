@@ -1,6 +1,7 @@
 import React from "react"
 import HeroGraph from "../hero-graph"
 import { Button } from "../ui/button"
+import Link from "next/link"
 
 const HeroSection = () => {
   return (
@@ -16,9 +17,11 @@ const HeroSection = () => {
         </p>
 
         <div className="flex gap-4">
-          <Button className="cursor-pointer rounded-md bg-black px-6 py-3 text-white transition hover:scale-102">
-            Get Started
-          </Button>
+          <Link href="/login">
+            <Button className="cursor-pointer rounded-md bg-black px-6 py-3 text-white transition hover:scale-102">
+              Get Started
+            </Button>
+          </Link>
 
           <Button
             variant="outline"
