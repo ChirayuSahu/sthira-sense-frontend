@@ -12,7 +12,7 @@ import {
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-import { LayoutDashboard, BarChart3, Settings, User, BotMessageSquare } from "lucide-react"
+import { LayoutDashboard, BarChart3, Settings, User, BotMessageSquare, LogOut } from "lucide-react"
 
 const sidebarItems = [
   {
@@ -36,9 +36,9 @@ const sidebarItems = [
     href: "/profile",
   },
   {
-    label: "Settings",
-    icon: <Settings size={18} />,
-    href: "/settings",
+    label: "Logout",
+    icon: <LogOut size={18} />,
+    href: "/api/logout",
   },
 ]
 
