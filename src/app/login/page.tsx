@@ -1,16 +1,21 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { useSearchParams } from "next/navigation"
+import { toast } from "sonner"
 
 const LoginPage = () => {
   const handleGoogleLogin = () => {
     window.location.href = "https://sthirasense.onrender.com/v1/auth/google"
   }
 
+  const searchParams = useSearchParams()
+  const error = searchParams.get("error")
+
   return (
-    <div className="bg-muted/40 flex min-h-screen w-full items-center justify-center px-4">
+    <div className="bg-muted/40 flex min-h-screen w-full flex-col items-center justify-center gap-2 px-4">
       <Card className="w-full max-w-md border shadow-sm">
         <CardHeader className="space-y-2 text-center">
           <CardTitle className="text-2xl font-semibold">Sign in to SthiraSense</CardTitle>
@@ -45,6 +50,11 @@ const LoginPage = () => {
           </Button>
         </CardContent>
       </Card>
+      {error && (
+        <Card className="w-full max-w-md border shadow-sm">
+          <CardDescription className="text-center text-red-500">{error}</CardDescription>
+        </Card>
+      )}
     </div>
   )
 }
