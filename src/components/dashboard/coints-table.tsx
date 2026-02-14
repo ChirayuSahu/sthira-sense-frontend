@@ -50,25 +50,26 @@ export default function StableCoinsTable() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>#</TableHead>
+            <TableHead className="text-center">#</TableHead>
             <TableHead>Coin</TableHead>
-            <TableHead className="text-right">Price</TableHead>
-            <TableHead className="text-right">Peg Dev</TableHead>
-            <TableHead className="text-right">24h %</TableHead>
-            <TableHead className="text-right">Market Cap</TableHead>
-            <TableHead className="text-right">Volume</TableHead>
-            <TableHead className="text-right">Supply</TableHead>
+            <TableHead className="text-center">Price</TableHead>
+            <TableHead className="text-center">Peg Dev</TableHead>
+            <TableHead className="text-center">24h %</TableHead>
+            <TableHead className="text-center">Market Cap</TableHead>
+            <TableHead className="text-center">Volume</TableHead>
+            <TableHead className="text-center">Supply</TableHead>
           </TableRow>
         </TableHeader>
 
         <TableBody>
           {data.length !== 0 &&
+            Array.isArray(data) &&
             data.map((coin) => {
               const pegDev = (coin.current_price - 1) * 100
 
               return (
                 <TableRow key={coin.id}>
-                  <TableCell>{coin.market_cap_rank}</TableCell>
+                  <TableCell className="text-center">{coin.market_cap_rank}</TableCell>
 
                   <TableCell className="flex items-center gap-3">
                     <Image
@@ -85,10 +86,10 @@ export default function StableCoinsTable() {
                     </div>
                   </TableCell>
 
-                  <TableCell className="text-right">${coin.current_price.toFixed(4)}</TableCell>
+                  <TableCell className="text-center">${coin.current_price.toFixed(4)}</TableCell>
 
                   <TableCell
-                    className={`text-right font-medium ${
+                    className={`text-center font-medium ${
                       pegDev >= 0 ? "text-green-600" : "text-red-600"
                     }`}
                   >
@@ -96,20 +97,20 @@ export default function StableCoinsTable() {
                   </TableCell>
 
                   <TableCell
-                    className={`text-right font-medium ${
+                    className={`text-center font-medium ${
                       coin.price_change_percentage_24h >= 0 ? "text-green-600" : "text-red-600"
                     }`}
                   >
                     {coin.price_change_percentage_24h.toFixed(2)}%
                   </TableCell>
 
-                  <TableCell className="text-right">${coin.market_cap.toLocaleString()}</TableCell>
+                  <TableCell className="text-center">${coin.market_cap.toLocaleString()}</TableCell>
 
-                  <TableCell className="text-right">
+                  <TableCell className="text-center">
                     ${coin.total_volume.toLocaleString()}
                   </TableCell>
 
-                  <TableCell className="text-right">
+                  <TableCell className="text-center">
                     {coin.circulating_supply.toLocaleString()}
                   </TableCell>
                 </TableRow>
