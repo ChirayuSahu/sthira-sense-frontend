@@ -7,10 +7,10 @@ export async function GET(request: NextRequest) {
   const secret = process.env.JWT_SECRET
 
   if (!token || !secret) {
-    return NextResponse.json(
-      { success: false, message: "Missing token or secret" },
-      { status: 400 }
+    const response = NextResponse.redirect(
+      new URL("/login?error=Missing+token+or+secret", request.url)
     )
+    return response
   }
 
   const decoded = jwt.verify(token, secret) as { id: string }

@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
-import { cookies } from "next/headers"
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-  const token = (await cookies()).get("token")?.value
+  const token = request.cookies.get("token")?.value
 
   const protectedRoutes = ["/dashboard"]
   const authRoutes = ["/login"]
