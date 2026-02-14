@@ -5,6 +5,7 @@ import { Menu, X } from "lucide-react"
 import { Button } from "../ui/button"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { ModeToggle } from "../ui/mode-switcher"
 
 const navItems = [
   { name: "Features", href: "#" },
@@ -22,18 +23,18 @@ export default function Navbar() {
   return (
     <div className="fixed top-6 right-0 left-0 z-50 flex justify-center">
       <div className="w-full max-w-7xl px-6">
-        <div className="rounded-xl border border-gray-200 bg-white px-6">
+        <div className="border-border bg-background/80 rounded-xl border px-6 backdrop-blur-md">
           <div className="flex h-16 items-center justify-between">
-            <div className="text-lg font-semibold tracking-tight text-black">
-              Sthira<span className="text-gray-500">Sense</span>
+            <div className="text-foreground text-lg font-semibold tracking-tight">
+              Sthira<span className="text-muted-foreground">Sense</span>
             </div>
 
-            <nav className="hidden items-center gap-10 text-sm text-gray-600 md:flex">
+            <nav className="text-muted-foreground hidden items-center gap-10 text-sm md:flex">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="transition-all hover:scale-102 hover:text-black"
+                  className="hover:text-foreground transition-all hover:scale-102"
                 >
                   {item.name}
                 </Link>
@@ -42,37 +43,41 @@ export default function Navbar() {
 
             {/* Desktop CTA */}
             <div className="hidden items-center gap-4 md:flex">
+              <ModeToggle />
               <Button
                 variant="outline"
-                className="cursor-pointer text-gray-600 hover:scale-102 hover:text-black"
+                className="text-muted-foreground hover:text-foreground cursor-pointer hover:scale-102"
               >
                 Login
               </Button>
 
-              <Button className="cursor-pointer rounded-md bg-black px-5 text-white hover:scale-102">
+              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer rounded-md px-5 hover:scale-102">
                 Get Started
               </Button>
             </div>
 
             {/* Mobile Toggle */}
-            <button onClick={() => setOpen(!open)} className="text-black md:hidden">
-              {open ? <X size={22} /> : <Menu size={22} />}
-            </button>
+            <div className="flex items-center gap-4 md:hidden">
+              <ModeToggle />
+              <button onClick={() => setOpen(!open)} className="text-foreground">
+                {open ? <X size={22} /> : <Menu size={22} />}
+              </button>
+            </div>
           </div>
 
           {open && (
-            <div className="flex flex-col gap-6 border-t border-gray-200 py-6 text-sm text-gray-700 md:hidden">
+            <div className="border-border text-muted-foreground flex flex-col gap-6 border-t py-6 text-sm md:hidden">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="transition-colors hover:text-black"
+                  className="hover:text-foreground transition-colors"
                 >
                   {item.name}
                 </Link>
               ))}
 
-              <Button className="w-full cursor-pointer rounded-md bg-black text-white transition hover:scale-102">
+              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 w-full cursor-pointer rounded-md transition hover:scale-102">
                 Get Started
               </Button>
             </div>

@@ -6,6 +6,7 @@ import { Toaster } from "sonner"
 //import sections
 import Navbar from "@/components/sections/navbar"
 import GoogleTranslate from "@/components/others/google-translate"
+import { ThemeProvider } from "@/components/providers/theme-provider"
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -23,12 +24,19 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${outfit.variable} font-outfit antialiased`}>
-        <Navbar />
-        {children}
-        <Toaster position="top-right" />
-        <GoogleTranslate />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          {children}
+          <Toaster position="top-right" />
+          <GoogleTranslate />
+        </ThemeProvider>
       </body>
     </html>
   )
