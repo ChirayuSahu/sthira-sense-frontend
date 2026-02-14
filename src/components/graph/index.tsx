@@ -71,7 +71,6 @@ export default function CustomGraph({
     return () => controller.abort()
   }, [symbol, period1, period2, interval])
 
-  // ✅ Calculate Change
   const lastValue = data[data.length - 1]?.value
   const prevValue = data[data.length - 2]?.value
 
@@ -86,9 +85,10 @@ export default function CustomGraph({
   const isUp = change > 0
   const isDown = change < 0
 
+  const chartColor = isUp ? "#22c55e" : isDown ? "#ef4444" : "#9ca3af"
+
   return (
     <div className="relative h-full w-full">
-      {/* Top Badge Section */}
       <div className="absolute top-2 left-2 z-10 flex items-center gap-2">
         <Badge variant="outline" className="rounded-md bg-white">
           {symbol}
@@ -96,8 +96,12 @@ export default function CustomGraph({
 
         {showStat && data.length > 1 && (
           <Badge
-            className={`rounded-md font-medium text-white ${
-              isUp ? "bg-green-500" : isDown ? "bg-red-500" : "bg-gray-400"
+            className={`rounded-md bg-white font-medium ${
+              isUp
+                ? "border border-green-500 text-green-500"
+                : isDown
+                  ? "border border-red-500 text-red-500"
+                  : "border border-gray-400 text-gray-400"
             }`}
           >
             {isUp ? "▲" : isDown ? "▼" : "–"} {percent.toFixed(2)}%
@@ -105,14 +109,12 @@ export default function CustomGraph({
         )}
       </div>
 
-      {/* Loader */}
       {data.length === 0 && (
         <div className="text-muted-foreground flex h-full min-h-20 w-full animate-pulse items-center justify-center">
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
         </div>
       )}
 
-      {/* Chart */}
       {data.length > 0 && (
         <ChartContainer config={chartConfig} className="aspect-auto h-full w-full">
           <AreaChart
@@ -141,10 +143,10 @@ export default function CustomGraph({
 
             <Area
               dataKey="value"
-              fill="var(--chart-1)"
+              fill={chartColor}
               fillOpacity={0.4}
               type={type}
-              stroke="var(--chart-1)"
+              stroke={chartColor}
               animationDuration={1200}
               animationEasing="ease-in-out"
             />
