@@ -13,14 +13,20 @@ export async function GET(request: NextRequest) {
     return response
   }
 
-  const decoded = jwt.verify(token, secret) as { id: string }
+  const decoded = jwt.verify(token, secret) as { id: string } | null
 
   if (!decoded || !decoded.id) {
     return NextResponse.json({ success: false, message: "Invalid token" }, { status: 400 })
   }
 
   const response = NextResponse.redirect(new URL("/dashboard", request.url))
-  response.cookies.set("token", token, { httpOnly: true, path: "/", maxAge: 60 * 60 * 24 * 7 }) // 7 days
+  response.cookies.set("token", token, {
+    httpOnly: true,
+    path: "/",
+    maxAge: 60 * 60 * 24 * 7,
+    secure: true,
+    sameSite: "lax",
+  }) // 7 days
 
   return response
 }
