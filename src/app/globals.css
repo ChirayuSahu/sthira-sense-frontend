@@ -130,3 +130,13 @@
 .font-outfit {
   font-family: var(--font-outfit);
 }
+
+.goog-te-gadget img {
+  display: none !important;
+}
+body > .skiptranslate {
+  display: none;
+}
+body {
+  top: 0px !important;
+}

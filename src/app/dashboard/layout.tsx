@@ -1,5 +1,6 @@
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/sidebar"
+import GoogleTranslate from "@/components/others/google-translate"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
