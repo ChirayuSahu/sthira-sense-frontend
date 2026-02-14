@@ -75,7 +75,7 @@ export default function CustomGraph({
         {symbol}
       </Badge>
       {data.length === 0 && (
-        <div className="text-muted-foreground flex h-full w-full animate-pulse items-center justify-center">
+        <div className="text-muted-foreground flex h-full min-h-20 w-full animate-pulse items-center justify-center">
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
         </div>
       )}

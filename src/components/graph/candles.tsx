@@ -50,8 +50,8 @@ export default function CustomCandleChart({
       crosshair: {
         mode: 1,
       },
-      width: containerRef.current.clientWidth,
-      height: containerRef.current.clientHeight,
+      width: containerRef.current.clientWidth ? containerRef.current.clientWidth : 0,
+      height: containerRef.current.clientHeight ? containerRef.current.clientHeight : 0,
     })
 
     chartRef.current = chart
@@ -82,12 +82,13 @@ export default function CustomCandleChart({
     }
 
     const resizeObserver = new ResizeObserver((entries) => {
-      if (!entries.length) return
-
+      if (!entries.length || !chartRef.current) return
       const { width, height } = entries[0].contentRect
 
-      chart.applyOptions({ width, height })
-      chart.timeScale().fitContent()
+      if (width > 0 && height > 0) {
+        chartRef.current.applyOptions({ width, height })
+        chartRef.current.timeScale().fitContent()
+      }
     })
 
     resizeObserver.observe(containerRef.current)
@@ -158,17 +159,18 @@ export default function CustomCandleChart({
   }, [symbol, period1, period2, interval])
 
   return (
-    <div className="relative h-full min-h-125 w-full overflow-hidden">
+    <div className="relative max-h-full min-h-auto w-full overflow-hidden">
       <Badge variant="outline" className="absolute top-2 left-2 z-10 rounded-md bg-white">
         {symbol}
       </Badge>
 
       {loading && (
-        <div className="text-muted-foreground flex h-full w-full items-center justify-center">
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/50 backdrop-blur-xs">
           <Loader2 className="h-4 w-4 animate-spin" />
         </div>
       )}
-      <div ref={containerRef} className="h-full w-full" />
+
+      <div className="h-170 min-h-125" ref={containerRef} />
     </div>
   )
 }
