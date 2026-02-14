@@ -12,7 +12,7 @@ const FNGCard = () => {
     const fetchFNGData = async () => {
       try {
         const res = await fetch("/api/fng", {
-          cache: "default",
+          cache: "force-cache",
         })
 
         const data: FNGResponse = await res.json()

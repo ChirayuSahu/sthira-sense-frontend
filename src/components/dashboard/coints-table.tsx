@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { toast } from "sonner"
 
 import Image from "next/image"
 
@@ -27,12 +28,17 @@ type StableCoin = {
 }
 
 export default function StableCoinsTable() {
-  const [data, setData] = useState<StableCoin[]>([])
+  const [data, setData] = useState<StableCoin[] | []>([])
 
   useEffect(() => {
     async function fetchCoins() {
       const res = await fetch("/api/coins")
       const json = await res.json()
+
+      if (!res.ok) {
+        toast.error("Failed to fetch coin data")
+      }
+
       setData(json.data)
     }
 
@@ -56,56 +62,59 @@ export default function StableCoinsTable() {
         </TableHeader>
 
         <TableBody>
-          {data.map((coin) => {
-            const pegDev = (coin.current_price - 1) * 100
+          {data.length !== 0 &&
+            data.map((coin) => {
+              const pegDev = (coin.current_price - 1) * 100
 
-            return (
-              <TableRow key={coin.id}>
-                <TableCell>{coin.market_cap_rank}</TableCell>
+              return (
+                <TableRow key={coin.id}>
+                  <TableCell>{coin.market_cap_rank}</TableCell>
 
-                <TableCell className="flex items-center gap-3">
-                  <Image
-                    src={coin.image}
-                    alt={coin.name}
-                    className="h-6 w-6 rounded-full"
-                    height={100}
-                    width={100}
-                    draggable={false}
-                  />
-                  <div>
-                    <p className="font-medium">{coin.name}</p>
-                    <p className="text-muted-foreground text-xs uppercase">{coin.symbol}</p>
-                  </div>
-                </TableCell>
+                  <TableCell className="flex items-center gap-3">
+                    <Image
+                      src={coin.image}
+                      alt={coin.name}
+                      className="h-6 w-6 rounded-full"
+                      height={100}
+                      width={100}
+                      draggable={false}
+                    />
+                    <div>
+                      <p className="font-medium">{coin.name}</p>
+                      <p className="text-muted-foreground text-xs uppercase">{coin.symbol}</p>
+                    </div>
+                  </TableCell>
 
-                <TableCell className="text-right">${coin.current_price.toFixed(4)}</TableCell>
+                  <TableCell className="text-right">${coin.current_price.toFixed(4)}</TableCell>
 
-                <TableCell
-                  className={`text-right font-medium ${
-                    pegDev >= 0 ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  {pegDev.toFixed(2)}%
-                </TableCell>
+                  <TableCell
+                    className={`text-right font-medium ${
+                      pegDev >= 0 ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    {pegDev.toFixed(2)}%
+                  </TableCell>
 
-                <TableCell
-                  className={`text-right font-medium ${
-                    coin.price_change_percentage_24h >= 0 ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  {coin.price_change_percentage_24h.toFixed(2)}%
-                </TableCell>
+                  <TableCell
+                    className={`text-right font-medium ${
+                      coin.price_change_percentage_24h >= 0 ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    {coin.price_change_percentage_24h.toFixed(2)}%
+                  </TableCell>
 
-                <TableCell className="text-right">${coin.market_cap.toLocaleString()}</TableCell>
+                  <TableCell className="text-right">${coin.market_cap.toLocaleString()}</TableCell>
 
-                <TableCell className="text-right">${coin.total_volume.toLocaleString()}</TableCell>
+                  <TableCell className="text-right">
+                    ${coin.total_volume.toLocaleString()}
+                  </TableCell>
 
-                <TableCell className="text-right">
-                  {coin.circulating_supply.toLocaleString()}
-                </TableCell>
-              </TableRow>
-            )
-          })}
+                  <TableCell className="text-right">
+                    {coin.circulating_supply.toLocaleString()}
+                  </TableCell>
+                </TableRow>
+              )
+            })}
 
           {data.length === 0 && (
             <TableRow>
