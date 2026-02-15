@@ -14,7 +14,7 @@ function LoginSuccess() {
       document.cookie = `token=${token}; path=/; Secure; SameSite=Lax; Max-Age=3600` // 1 hour
       router.replace("/dashboard")
     }
-  }, [])
+  }, [params, router])
 
   return <p>Logging you in...</p>
 }
