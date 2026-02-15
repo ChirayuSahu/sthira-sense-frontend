@@ -82,8 +82,12 @@ export default function CustomGraph({
   // PRICE STATS
   // ===============================
 
-  const lastValue = data[data.length - 1]?.value
-  const prevValue = data[data.length - 2]?.value
+  const lastValue =
+    showPrediction && predictedDeviation ? 1 + predictedDeviation : data[data.length - 1]?.value
+  const prevValue =
+    showPrediction && predictedDeviation
+      ? data[data.length - 1]?.value
+      : data[data.length - 2]?.value
 
   let change = 0
   let percent = 0

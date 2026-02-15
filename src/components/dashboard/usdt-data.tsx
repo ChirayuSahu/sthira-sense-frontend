@@ -136,7 +136,7 @@ export default function USDTRiskCard() {
       <GraphCard
         type="monotone"
         symbol="USDT-USD"
-        showStat={false}
+        showStat={true}
         showPrediction={true}
         predictionDeviation={data.max_peg_deviation}
       />
