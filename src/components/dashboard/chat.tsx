@@ -14,11 +14,22 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import type { Message } from "@/types/messages"
 
 export default function AiChat() {
+  function generateRandomWelcomeMessage() {
+    const messages = [
+      "Hello! This is Sthira Sense AI. Ask me anything about the current coin or market trends!",
+      "Hi there! I'm your Sthira Sense AI assistant. Feel free to ask me anything about the current coin or market trends!",
+      "Welcome! I'm Sthira Sense AI, here to help you with insights on the current coin and market trends. What would you like to know?",
+      "Hey! This is Sthira Sense AI. I'm here to provide you with information about the current coin and market trends. Ask me anything!",
+    ]
+
+    return messages[Math.floor(Math.random() * messages.length)]
+  }
+
   const [messages, setMessages] = React.useState<Message[]>([
     {
       id: "1",
       role: "assistant",
-      content: "Hello! I'm your AI assistant. How can I help you today?",
+      content: generateRandomWelcomeMessage(),
       timestamp: new Date(),
     },
   ])
@@ -109,7 +120,9 @@ export default function AiChat() {
                     <Avatar className="h-8 w-8 border">
                       <AvatarFallback
                         className={
-                          m.role === "user" ? "bg-chart-1 text-primary-foreground" : "bg-muted"
+                          m.role === "user"
+                            ? "bg-chart-1 text-primary-foreground dark:text-white"
+                            : "bg-muted"
                         }
                       >
                         {m.role === "user" ? <User size={16} /> : <Bot size={16} />}
@@ -119,7 +132,7 @@ export default function AiChat() {
                     <div
                       className={`prose prose-sm dark:prose-invert max-w-none rounded-lg px-4 py-2 text-sm shadow-sm ${
                         m.role === "user"
-                          ? "bg-chart-1 text-primary-foreground prose-headings:text-primary-foreground prose-strong:text-primary-foreground prose-code:text-primary-foreground"
+                          ? "bg-chart-1 text-primary-foreground prose-headings:text-primary-foreground prose-strong:text-primary-foreground prose-code:text-primary-foreground dark:text-white"
                           : "bg-muted border"
                       }`}
                     >
