@@ -7,11 +7,13 @@ const GraphCard = ({
   showStat = true,
   showPrediction = false,
   predictionDeviation,
+  type = "linear",
 }: {
   symbol: string
   showStat?: boolean
   showPrediction?: boolean
   predictionDeviation?: number
+  type?: "linear" | "monotone"
 }) => {
   return (
     <Card className="flex min-h-100 w-full flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white py-0 md:min-h-0 dark:border-neutral-800 dark:bg-neutral-900">
@@ -23,6 +25,7 @@ const GraphCard = ({
         showStat={showStat}
         showPrediction={showPrediction}
         predictedDeviation={predictionDeviation || 0}
+        type={type}
       />
     </Card>
   )

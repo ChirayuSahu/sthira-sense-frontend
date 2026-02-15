@@ -95,7 +95,13 @@ export default function CustomGraph({
 
   const isUp = change > 0
   const isDown = change < 0
-  const chartColor = isUp ? "#22c55e" : isDown ? "#ef4444" : "#9ca3af"
+  const chartColor = !showPrediction
+    ? isUp
+      ? "#22c55e"
+      : isDown
+        ? "#ef4444"
+        : "#9ca3af"
+    : "#9ca3af"
 
   // ===============================
   // FUTURE PREDICTION DATA
@@ -144,7 +150,7 @@ export default function CustomGraph({
         )}
 
         {showPrediction && predictedDeviation != null && (
-          <Badge className="border border-yellow-500 text-yellow-600">
+          <Badge className="rounded-md border border-gray-200 bg-white text-black dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
             Predicted: {(predictedDeviation * 100).toFixed(4)}%
           </Badge>
         )}
@@ -160,7 +166,12 @@ export default function CustomGraph({
       {/* Chart */}
       {data.length > 0 && (
         <ChartContainer config={chartConfig} className="aspect-auto h-full w-full">
-          <AreaChart accessibilityLayer data={extendedData} margin={{ top: 30, left: 0, right: 0 }}>
+          <AreaChart
+            className={showPrediction ? "animate-pulse" : ""}
+            accessibilityLayer
+            data={extendedData}
+            margin={{ top: 30, left: 0, right: 0 }}
+          >
             <XAxis dataKey="time" hide />
             <YAxis
               domain={[(dataMin: number) => dataMin * 0.999, (dataMax: number) => dataMax * 1.001]}
