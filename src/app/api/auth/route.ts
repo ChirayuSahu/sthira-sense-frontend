@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   const token = searchParams.get("token")
 
   if (token) {
-    const response = NextResponse.redirect(new URL(`/dashboard`, request.url))
+    const response = NextResponse.json({ success: true, message: "Login successful", token })
     response.cookies.set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
