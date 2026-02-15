@@ -39,41 +39,47 @@ export default function ProfilePage() {
   const maskedKey = apiKey ? apiKey.slice(0, 10) + "••••••••••••••••" : ""
 
   return (
-    <div className="min-h-screen bg-neutral-950 p-8 text-white">
+    <div className="min-h-screen bg-gray-50 p-8 text-gray-900 dark:bg-neutral-950 dark:text-white">
       <div className="mx-auto max-w-3xl space-y-8">
-        <h1 className="text-3xl font-bold">Profile</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Profile</h1>
 
         {/* User Info Card */}
-        <Card className="rounded-2xl border-neutral-800 bg-neutral-900">
+        <Card className="rounded-2xl border border-gray-200 bg-white py-0 dark:border-neutral-800 dark:bg-neutral-900">
           <CardContent className="space-y-4 p-6">
-            <h2 className="text-lg font-semibold">Account Information</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Account Information
+            </h2>
 
             <div className="space-y-3">
               <div>
-                <p className="text-sm text-neutral-400">Full Name</p>
-                <p className="text-base">{user.name}</p>
+                <p className="text-sm text-gray-500 dark:text-neutral-400">Full Name</p>
+                <p className="text-base text-gray-900 dark:text-white">{user.name}</p>
               </div>
 
               <div>
-                <p className="text-sm text-neutral-400">Email</p>
-                <p className="text-base">{user.email}</p>
+                <p className="text-sm text-gray-500 dark:text-neutral-400">Email</p>
+                <p className="text-base text-gray-900 dark:text-white">{user.email}</p>
               </div>
 
-              <Badge className="bg-green-600">Active</Badge>
+              <Badge className="bg-green-600 text-white">Active</Badge>
             </div>
           </CardContent>
         </Card>
 
         {/* API Key Section */}
-        <Card className="rounded-2xl border-neutral-800 bg-neutral-900">
+        <Card className="rounded-2xl border border-gray-200 bg-white py-0 dark:border-neutral-800 dark:bg-neutral-900">
           <CardContent className="space-y-6 p-6">
             <div className="flex items-center justify-between">
-              <h2 className="flex items-center gap-2 text-lg font-semibold">
+              <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white">
                 <Key size={18} />
                 API Key Management
               </h2>
 
-              <Button onClick={generateApiKey} disabled={loading}>
+              <Button
+                onClick={generateApiKey}
+                disabled={loading}
+                className="bg-black text-white dark:bg-white dark:text-black"
+              >
                 {loading ? "Generating..." : apiKey ? "Regenerate Key" : "Generate API Key"}
               </Button>
             </div>
@@ -83,21 +89,29 @@ export default function ProfilePage() {
                 <Input
                   value={showKey ? apiKey : maskedKey}
                   readOnly
-                  className="border-neutral-700 bg-neutral-800"
+                  className="border-gray-200 bg-gray-50 text-gray-900 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
                 />
 
-                <Button variant="secondary" onClick={() => setShowKey(!showKey)}>
+                <Button
+                  variant="secondary"
+                  onClick={() => setShowKey(!showKey)}
+                  className="bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
+                >
                   {showKey ? <EyeOff size={16} /> : <Eye size={16} />}
                 </Button>
 
-                <Button variant="secondary" onClick={copyToClipboard}>
+                <Button
+                  variant="secondary"
+                  onClick={copyToClipboard}
+                  className="bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
+                >
                   <Copy size={16} />
                 </Button>
               </div>
             )}
 
             {!apiKey && (
-              <p className="text-sm text-neutral-400">
+              <p className="text-sm text-gray-500 dark:text-neutral-400">
                 Generate an API key to access the stablecoin risk API.
               </p>
             )}
