@@ -28,9 +28,8 @@ const HeroSection = () => {
           </h1>
 
           <p className="mx-auto max-w-2xl text-lg leading-relaxed text-neutral-600 md:text-xl dark:text-neutral-400">
-            Sthira Sense transforms raw stable coin health data into clear, actionable analytics.
-            Designed for traders, analysts, and enthusiasts seeking to navigate the stable coin
-            landscape with confidence.
+            Sthira Sense transforms raw stable coin data into clear, actionable analytics. Designed
+            for traders, analysts, and enthusiasts.
           </p>
         </div>
 
