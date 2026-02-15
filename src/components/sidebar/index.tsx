@@ -34,7 +34,7 @@ const sidebarItems = [
   {
     label: "Profile",
     icon: <User size={18} />,
-    href: "/profile",
+    href: "/dashboard/profile",
   },
   {
     label: "Logout",
