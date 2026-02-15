@@ -1,22 +1,27 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { Area, AreaChart, XAxis, YAxis } from "recharts"
+import { useEffect, useMemo, useState } from "react"
+import { Area, AreaChart, XAxis, YAxis, Line, ReferenceLine } from "recharts"
+
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
+
 import { Badge } from "../ui/badge"
 import { Loader2 } from "lucide-react"
-
 import type { OHCLResponse } from "@/types/ohcl"
 
 const chartConfig = {
-  desktop: {
+  price: {
     label: "Price",
     color: "var(--chart-1)",
+  },
+  prediction: {
+    label: "Predicted Deviation",
+    color: "var(--chart-2)",
   },
 } satisfies ChartConfig
 
@@ -27,6 +32,8 @@ export default function CustomGraph({
   interval,
   type = "linear",
   showStat = true,
+  showPrediction = false,
+  predictedDeviation, // optional value from API
 }: {
   symbol: string
   period1: number
@@ -34,6 +41,8 @@ export default function CustomGraph({
   interval: string
   type?: "linear" | "monotone"
   showStat?: boolean
+  showPrediction?: boolean
+  predictedDeviation?: number
 }) {
   const [data, setData] = useState<{ time: number; value: number }[]>([])
 
@@ -44,9 +53,7 @@ export default function CustomGraph({
       try {
         const res = await fetch(
           `/api/ohcl?symbol=${symbol}&period1=${period1}&period2=${period2}&interval=${interval}`,
-          {
-            signal: controller.signal,
-          }
+          { signal: controller.signal }
         )
 
         const json: OHCLResponse = await res.json()
@@ -71,6 +78,10 @@ export default function CustomGraph({
     return () => controller.abort()
   }, [symbol, period1, period2, interval])
 
+  // ===============================
+  // PRICE STATS
+  // ===============================
+
   const lastValue = data[data.length - 1]?.value
   const prevValue = data[data.length - 2]?.value
 
@@ -84,11 +95,32 @@ export default function CustomGraph({
 
   const isUp = change > 0
   const isDown = change < 0
-
   const chartColor = isUp ? "#22c55e" : isDown ? "#ef4444" : "#9ca3af"
+
+  // ===============================
+  // FUTURE PREDICTION DATA
+  // ===============================
+
+  const extendedData = useMemo(() => {
+    if (!showPrediction || !predictedDeviation || data.length === 0) {
+      return data
+    }
+
+    const lastTime = data[data.length - 1].time
+    const futureTime = lastTime + 60 * 60 * 1000 // +1 hour (adjustable)
+
+    return [
+      ...data,
+      {
+        time: futureTime,
+        value: lastValue! * (1 + predictedDeviation),
+      },
+    ]
+  }, [data, showPrediction, predictedDeviation, lastValue])
 
   return (
     <div className="relative h-full w-full">
+      {/* Top Badge */}
       <div className="absolute top-2 left-2 z-10 flex items-center gap-2">
         <Badge
           variant="outline"
@@ -110,28 +142,30 @@ export default function CustomGraph({
             {isUp ? "▲" : isDown ? "▼" : "–"} {percent.toFixed(2)}%
           </Badge>
         )}
+
+        {showPrediction && predictedDeviation != null && (
+          <Badge className="border border-yellow-500 text-yellow-600">
+            Predicted: {(predictedDeviation * 100).toFixed(4)}%
+          </Badge>
+        )}
       </div>
 
+      {/* Loading */}
       {data.length === 0 && (
         <div className="text-muted-foreground flex h-full min-h-20 w-full animate-pulse items-center justify-center">
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
         </div>
       )}
 
+      {/* Chart */}
       {data.length > 0 && (
         <ChartContainer config={chartConfig} className="aspect-auto h-full w-full">
-          <AreaChart
-            accessibilityLayer
-            data={data}
-            margin={{
-              top: 30,
-              left: 0,
-              right: 0,
-            }}
-          >
-            <XAxis dataKey="time" tickLine={false} axisLine={false} hide />
-
-            <YAxis domain={[(dataMin: number) => dataMin, (dataMax: number) => dataMax]} hide />
+          <AreaChart accessibilityLayer data={extendedData} margin={{ top: 30, left: 0, right: 0 }}>
+            <XAxis dataKey="time" hide />
+            <YAxis
+              domain={[(dataMin: number) => dataMin * 0.999, (dataMax: number) => dataMax * 1.001]}
+              hide
+            />
 
             <ChartTooltip
               cursor={false}
@@ -144,6 +178,7 @@ export default function CustomGraph({
               }
             />
 
+            {/* Historical Price */}
             <Area
               dataKey="value"
               fill={chartColor}
@@ -153,6 +188,22 @@ export default function CustomGraph({
               animationDuration={1200}
               animationEasing="ease-in-out"
             />
+
+            {/* Future Prediction Line */}
+            {showPrediction && predictedDeviation != null && (
+              <Line
+                type="monotone"
+                dataKey="value"
+                stroke="#f59e0b"
+                strokeDasharray="6 4"
+                dot={false}
+              />
+            )}
+
+            {/* Split Marker */}
+            {showPrediction && (
+              <ReferenceLine x={data[data.length - 1].time} stroke="#999" strokeDasharray="3 3" />
+            )}
           </AreaChart>
         </ChartContainer>
       )}

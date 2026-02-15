@@ -11,9 +11,8 @@ import {
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ModeToggle } from "../ui/mode-switcher"
 
-import { LayoutDashboard, BarChart3, User, BotMessageSquare, LogOut } from "lucide-react"
+import { LayoutDashboard, BarChart3, User, LogOut, Activity } from "lucide-react"
 
 const sidebarItems = [
   {
@@ -27,8 +26,8 @@ const sidebarItems = [
     href: "/dashboard/analytics",
   },
   {
-    label: "AI Chat",
-    icon: <BotMessageSquare size={18} />,
+    label: "Risk Analysis",
+    icon: <Activity size={18} />,
     href: "/dashboard/chat",
   },
   {

@@ -18,6 +18,7 @@ import {
 import { Card } from "@/components/ui/card"
 import CustomCandleChart from "@/components/graph/candles"
 import AiChat from "@/components/dashboard/chat"
+import GraphCard from "@/components/dashboard/graph-card"
 
 const coins = [
   // { label: "Bitcoin", value: "BTC" },

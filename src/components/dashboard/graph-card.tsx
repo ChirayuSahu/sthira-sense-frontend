@@ -2,7 +2,17 @@ import React from "react"
 import CustomGraph from "@/components/graph"
 import { Card } from "../ui/card"
 
-const GraphCard = ({ symbol, showStat = true }: { symbol: string; showStat?: boolean }) => {
+const GraphCard = ({
+  symbol,
+  showStat = true,
+  showPrediction = false,
+  predictionDeviation,
+}: {
+  symbol: string
+  showStat?: boolean
+  showPrediction?: boolean
+  predictionDeviation?: number
+}) => {
   return (
     <Card className="flex min-h-100 w-full flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white py-0 md:min-h-0 dark:border-neutral-800 dark:bg-neutral-900">
       <CustomGraph
@@ -11,6 +21,8 @@ const GraphCard = ({ symbol, showStat = true }: { symbol: string; showStat?: boo
         period2={Math.floor(Date.now() / 1000)}
         interval="5m"
         showStat={showStat}
+        showPrediction={showPrediction}
+        predictedDeviation={predictionDeviation || 0}
       />
     </Card>
   )
